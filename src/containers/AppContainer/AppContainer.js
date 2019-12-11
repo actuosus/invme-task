@@ -129,7 +129,7 @@ const AppContainer = ({
               targetBoundingRect.left -
               Math.max(formBoundingRect.width, 150) +
               14,
-            y: targetBoundingRect.top
+            y: targetBoundingRect.top - 16 + 2
           });
         }
       }
