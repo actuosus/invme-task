@@ -147,7 +147,7 @@ const AppContainer = ({
 
   const handleContainerPress = () => {
     setShowEventDetailsForm(false);
-  
+  }
 
   return (
     <ThemeProvider theme={theme}>
