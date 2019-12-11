@@ -1,0 +1,38 @@
+{
+    "extends": "react-app",
+    "env": {
+        "browser": true,
+        "node": true,
+        "es6": true
+    },
+    "rules": {
+        "react/jsx-curly-brace-presence": [
+            2,
+            {
+                "props": "always"
+            }
+        ],
+        "max-len": [
+            "error",
+            140
+        ],
+        "indent": "off",
+        "flowtype/type-import-style": [
+            1,
+            "identifier"
+        ],
+        "flowtype/define-flow-type": 1,
+        "flowtype/delimiter-dangle": [
+            2,
+            "only-multiline"
+        ]
+    },
+    "globals": {
+        "__DEV__": true
+    },
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
+    }
+}

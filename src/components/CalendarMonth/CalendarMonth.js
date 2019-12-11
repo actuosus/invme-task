@@ -1,0 +1,186 @@
+/**
+ * @flow
+ */
+
+import * as React from "react";
+import View from "../View";
+import Heading from "../Heading";
+import Head from "../Head";
+import CalendarCell from "../CalendarCell";
+import styled from "styled-components";
+import CalendarFooter from "../CalendarFooter";
+import { type Event } from "../../types/Event";
+
+const CalendarCellsView = styled(View)`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: 85px;
+`;
+
+type CalendarMonthProps = {
+  events?: Event[],
+  onCellPress: (event: SyntheticEvent<any>, date: string) => void,
+  onEventPress: (event: SyntheticEvent<any>, calendarEvent: Event) => void,
+  onRemoveAllPress: () => void
+};
+
+const eventsByDate = (events?: Event[]) => {
+  const byDate = {};
+
+  if (events) {
+    events.forEach(_ => {
+      const dateString = _.date;
+      if (byDate[dateString]) {
+        byDate[dateString].push(_);
+      } else {
+        byDate[dateString] = [_];
+      }
+    });
+  }
+
+  return byDate;
+};
+
+const eventsByMonth = (events?: Event[]) => {
+  const byMonth = {};
+
+  if (events) {
+    events.forEach(_ => {
+      const date = new Date(_.date);
+      const dateString = `${date.getFullYear()}-${date.getMonth()}`;
+      if (byMonth[dateString]) {
+        byMonth[dateString].push(_);
+      } else {
+        byMonth[dateString] = [_];
+      }
+    });
+  }
+
+  return byMonth;
+};
+
+const isSameDay = (a: Date, b: Date) => {
+  if (
+    a.getFullYear() === b.getFullYear() &&
+    a.getMonth() === b.getMonth() &&
+    a.getDate() === b.getDate()
+  ) {
+    return true;
+  }
+
+  return false;
+};
+
+const CalendarMonth = (props: CalendarMonthProps) => {
+  const [year, setYear] = React.useState(2020);
+  const [month, setMonth] = React.useState(1);
+
+  const today = new Date();
+
+  const handlePrevMonthPress = () => {
+    let newMonth = month - 1;
+    if (newMonth <= 0) {
+      newMonth = 12;
+
+      setYear(year - 1);
+    }
+    setMonth(newMonth);
+  };
+
+  const handleNextMonthPress = () => {
+    let newMonth = month + 1;
+    if (newMonth >= 12) {
+      newMonth = 0;
+
+      setYear(year + 1);
+    }
+    setMonth(newMonth);
+  };
+
+  const handleTodayPress = () => {
+    setMonth(today.getMonth() + 1);
+    setYear(today.getFullYear());
+  };
+
+  const handleCellPress = (date: string) => (event: SyntheticEvent<any>) => {
+    props.onCellPress(event, date);
+  };
+
+  const handleEventPress = (
+    event: SyntheticEvent<any>,
+    calendarEvent: Event
+  ) => {
+    props.onEventPress(event, calendarEvent);
+  };
+
+  const handleRemoveAllPress = () => {
+    props.onRemoveAllPress();
+  };
+
+  const startOfTheMonth = new Date(year, month - 1, 1);
+  const endOfTheMonth = new Date(year, month, 0);
+
+  const startWeekDay = startOfTheMonth.getDay();
+  const endWeekDay = endOfTheMonth.getDay();
+  const daysInMonth = endOfTheMonth.getDate();
+  const startPadCells = Array(startWeekDay === 0 ? 6 : startWeekDay - 1).fill(
+    null
+  );
+  const endPadCells = Array(7 - endWeekDay).fill(null);
+  const cells = Array(daysInMonth).fill(null);
+
+  const byDate = eventsByDate(props.events);
+  const byMonth = eventsByMonth(props.events);
+
+  return (
+    <View>
+      <Heading
+        date={endOfTheMonth}
+        onPrevPress={handlePrevMonthPress}
+        onNextPress={handleNextMonthPress}
+        onTodayPress={handleTodayPress}
+      />
+      <Head />
+      <CalendarCellsView>
+        {startPadCells.map((_, i) => (
+          <CalendarCell key={`start-pad-${i}`} day={i + 1} pad />
+        ))}
+        {cells.map((_, i) => {
+          const date = new Date(year, month, i + 1);
+          const dateString = date.toISOString();
+          const _today = new Date(
+            today.getFullYear(),
+            today.getMonth(),
+            today.getDate()
+          );
+
+          return (
+            <CalendarCell
+              key={i}
+              day={i + 1}
+              onPress={handleCellPress(dateString)}
+              onEventPress={handleEventPress}
+              events={byDate[dateString]}
+              today={isSameDay(_today, date)}
+            />
+          );
+        })}
+        {endPadCells.map((_, i) => (
+          <CalendarCell key={`end-pad-${i}`} day={i + 1} pad />
+        ))}
+      </CalendarCellsView>
+
+      <CalendarFooter
+        events={byMonth[`${year}-${month}`]}
+        onRemoveAllPress={handleRemoveAllPress}
+        date={startOfTheMonth}
+      />
+    </View>
+  );
+};
+
+export default CalendarMonth;

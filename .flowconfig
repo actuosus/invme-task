@@ -1,0 +1,11 @@
+[strict]
+deprecated-type
+nonstrict-import
+sketchy-null
+unclear-type
+unsafe-getters-setters
+untyped-import
+untyped-type-import
+
+[version]
+^0.113.0
