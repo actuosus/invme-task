@@ -11,11 +11,14 @@ import {
   addEvent,
   updateEvent,
   removeEvent,
-  removeAllEvents
+  removeAllEvents,
+  removeAllEventsByMonth
 } from "../../store/events/actions";
 import EventDetailsForm from "../../components/EventDetailsForm/EventDetailsForm";
 import { type Event } from "../../types/Event";
 import { type ReduxState } from "../../types/ReduxState";
+import ReactDOM from "react-dom";
+import { useRouter } from "next/router";
 
 const AppContainerView = styled(View)`
   padding: 48px;
@@ -58,7 +61,7 @@ const darkTheme = {
     },
     background: {
       default: "#1B1B1B",
-      paper: "rgba(127,127,127,0.1)"
+      paper: "#282A2B"
     },
     divider: "rgba(255, 255, 255, 0.12)"
   }
@@ -69,6 +72,7 @@ type AppContainerProps = {
   addEvent: typeof addEvent,
   updateEvent: typeof updateEvent,
   removeEvent: typeof removeEvent,
+  removeAllEventsByMonth: typeof removeAllEventsByMonth,
   removeAllEvents: typeof removeAllEvents
 };
 
@@ -77,38 +81,85 @@ const AppContainer = ({
   updateEvent,
   removeEvent,
   removeAllEvents,
+  removeAllEventsByMonth,
   ...props
 }: AppContainerProps) => {
   let theme = lightTheme;
   if (
+    typeof window !== "undefined" &&
     window.matchMedia &&
     window.matchMedia("(prefers-color-scheme: dark)").matches
   ) {
     theme = darkTheme;
 
     if (document.body.style) {
+      document.body.style.color = theme.palette.text.main;
       document.body.style.backgroundColor = theme.palette.background.default;
     }
   }
 
   const [showEventDetailsForm, setShowEventDetailsForm] = React.useState(false);
+  const [
+    shouldMountEventDetailsForm,
+    setShouldMountEventDetailsForm
+  ] = React.useState(false);
+  const container = React.useRef();
+  const eventDetailsForm = React.useRef();
+  const [lastFormTarget, setLastFormTarget] = React.useState();
+  const router = useRouter();
 
-  // @todo Handle out of window border positioning.
+  React.useEffect(() => {
+    if (container.current && eventDetailsForm.current) {
+      const containerDOMNode = ReactDOM.findDOMNode(container.current);
+      const formDomNode = ReactDOM.findDOMNode(eventDetailsForm.current);
+
+      if (containerDOMNode && formDomNode && lastFormTarget) {
+        const containerBoundingRect = containerDOMNode.getBoundingClientRect();
+        const targetBoundingRect = lastFormTarget.getBoundingClientRect();
+        const formBoundingRect = formDomNode.getBoundingClientRect();
+        if (
+          containerBoundingRect.width <=
+          targetBoundingRect.left +
+            targetBoundingRect.width +
+            Math.max(formBoundingRect.width, 150)
+        ) {
+          setEventDetailsFormPosition({
+            position: "left",
+            x:
+              targetBoundingRect.left -
+              Math.max(formBoundingRect.width, 150) +
+              14,
+            y: targetBoundingRect.top
+          });
+        }
+      }
+    }
+  }, [showEventDetailsForm, lastFormTarget]);
+
   const [
     eventDetailsFormPosition,
     setEventDetailsFormPosition
-  ] = React.useState({ x: 0, y: 0 });
-  const [selectedEvent, setSelectedEvent] = React.useState<Event>();
+  ] = React.useState({ position: "left", x: -10000, y: -10000 });
+
+  const [selectedEvent, setSelectedEvent] = React.useState<
+    Event | typeof undefined
+  >();
 
   const handleCellPress = (event: SyntheticEvent<any>, date) => {
-    addEvent("New Event", date, "Some thing");
+    const { payload } = addEvent("New Event", date, "");
 
-    const boundingRect = event.target.getBoundingClientRect();
+    event.stopPropagation();
 
+    const boundingRect = event.currentTarget.getBoundingClientRect();
+
+    setLastFormTarget(event.currentTarget);
+    setSelectedEvent({ id: payload.id, date: payload.date });
     setEventDetailsFormPosition({
+      position: "right",
       x: boundingRect.x + boundingRect.width - 14,
       y: boundingRect.y
     });
+    setShouldMountEventDetailsForm(true);
     setShowEventDetailsForm(true);
   };
 
@@ -116,17 +167,25 @@ const AppContainer = ({
     event: SyntheticEvent<any>,
     calendarEvent: Event
   ) => {
-    const boundingRect = event.target.getBoundingClientRect();
+    const boundingRect = event.currentTarget.getBoundingClientRect();
 
+    event.stopPropagation();
+
+    setLastFormTarget(event.currentTarget);
     setSelectedEvent(calendarEvent);
     setEventDetailsFormPosition({
+      position: "right",
       x: boundingRect.x + boundingRect.width - 14,
-      y: boundingRect.y
+      y: boundingRect.y - 16 + 2
     });
+    setShouldMountEventDetailsForm(true);
     setShowEventDetailsForm(true);
   };
 
-  const handleEventUpdate = (event, calendarEvent: Event) => {
+  const handleEventUpdate = (
+    event: SyntheticEvent<any>,
+    calendarEvent: Event
+  ) => {
     updateEvent(
       calendarEvent.id,
       calendarEvent.title,
@@ -135,36 +194,53 @@ const AppContainer = ({
     );
   };
 
-  const handleEventRemovePress = (event, calendarEvent: Event) => {
+  const handleEventRemovePress = (
+    event: SyntheticEvent<any>,
+    calendarEvent: Event
+  ) => {
     removeEvent(calendarEvent.id);
     setShowEventDetailsForm(false);
   };
 
-  const handleRemoveAllPress = () => {
-    removeAllEvents();
+  const handleRemoveAllByMonthPress = (isoDateString: string) => {
+    removeAllEventsByMonth(isoDateString);
     setShowEventDetailsForm(false);
   };
 
-  const handleContainerPress = () => {
+  const handleContainerPress = (event: SyntheticEvent<any>) => {
     setShowEventDetailsForm(false);
-  }
+  };
+
+  const handleFormPoseComplete = () => {
+    setShouldMountEventDetailsForm(false);
+  };
 
   return (
     <ThemeProvider theme={theme}>
-      <AppContainerView theme={theme} {...props} onPress={handleContainerPress}>
+      <AppContainerView
+        theme={theme}
+        onPress={handleContainerPress}
+        ref={container}
+        {...props}
+      >
         <CalendarMonth
           onCellPress={handleCellPress}
           onEventPress={handleEventPress}
-          onRemoveAllPress={handleRemoveAllPress}
+          onRemoveAllPress={handleRemoveAllByMonthPress}
           events={props.events}
+          year={router && router.query && parseInt(router.query.year)}
+          month={router && router.query && parseInt(router.query.month)}
         />
 
-        {showEventDetailsForm ? (
+        {shouldMountEventDetailsForm ? (
           <EventDetailsForm
             position={eventDetailsFormPosition}
             event={selectedEvent}
             onChange={handleEventUpdate}
             onRemovePress={handleEventRemovePress}
+            ref={eventDetailsForm}
+            opened={showEventDetailsForm}
+            onPoseComplete={handleFormPoseComplete}
           />
         ) : null}
       </AppContainerView>
@@ -180,7 +256,8 @@ const AppContainerConnected = connect(
     addEvent,
     updateEvent,
     removeEvent,
-    removeAllEvents
+    removeAllEvents,
+    removeAllEventsByMonth
   }
 )(AppContainer);
 

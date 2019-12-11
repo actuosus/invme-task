@@ -11,6 +11,7 @@ import {
   REMOVE_ALL_EVENTS,
   REMOVE_ALL_EVENTS_BY_MONTH
 } from "./types";
+import { isSameMonth } from "../../lib/calendar";
 
 const initialState = {
   items: []
@@ -22,14 +23,15 @@ export default function eventsReducer(
 ) {
   switch (action.type) {
     case ADD_EVENT:
-      return { ...state, items: state.items.concat(action.payload) };
+      return {
+        ...state,
+        items: state.items.concat(action.payload)
+      };
     case REMOVE_EVENT:
       return {
         ...state,
         items: state.items.filter(_ => {
-          if (
-            _.id === action.payload.id
-          ) {
+          if (_.id === action.payload.id) {
             return false;
           }
 
@@ -40,13 +42,10 @@ export default function eventsReducer(
       return {
         ...state,
         items: state.items.filter(_ => {
-          const date = new Date(_);
+          const date = new Date(_.date);
           const actionDate = new Date(action.payload.date);
 
-          if (
-            date.getFullYear() === actionDate.getFullYear() &&
-            date.getMonth() === actionDate.getMonth()
-          ) {
+          if (isSameMonth(date, actionDate)) {
             return false;
           }
 

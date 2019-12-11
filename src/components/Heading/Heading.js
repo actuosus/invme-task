@@ -43,8 +43,9 @@ type HeadingProps = {
 
 const Heading = (props: HeadingProps) => {
   const { date } = props;
-  const monthName = monthNames[date.getMonth()];
   const year = date.getFullYear();
+  const month = date.getMonth();
+  const monthName = monthNames[month];
 
   return (
     <HeadingView>
@@ -53,6 +54,8 @@ const Heading = (props: HeadingProps) => {
         <YearTitleView>{year}</YearTitleView>
       </View>
       <Navigator
+        year={year}
+        month={month + 1}
         onPrevPress={props.onPrevPress}
         onNextPress={props.onNextPress}
         onTodayPress={props.onTodayPress}

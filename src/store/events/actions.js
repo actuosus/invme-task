@@ -6,7 +6,8 @@ import {
   ADD_EVENT,
   UPDATE_EVENT,
   REMOVE_EVENT,
-  REMOVE_ALL_EVENTS
+  REMOVE_ALL_EVENTS,
+  REMOVE_ALL_EVENTS_BY_MONTH
 } from "./types";
 import uuid from "uuid/v4";
 import { type EventId } from "../../types/Event";
@@ -39,12 +40,12 @@ export const removeEvent = (id: EventId) => {
   };
 };
 
-export const removeAllEventsByMonth = (month: number) => {
+export const removeAllEventsByMonth = (isoDateString: string) => {
   return {
-    type: REMOVE_ALL_EVENTS
+    type: REMOVE_ALL_EVENTS_BY_MONTH,
+    payload: { date: isoDateString }
   };
 };
-
 
 export const removeAllEvents = () => {
   return {

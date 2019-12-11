@@ -26,18 +26,54 @@ const NavigatorButton = styled(Button)`
 type NavigatorProps = {
   onPrevPress?: () => void,
   onTodayPress?: () => void,
-  onNextPress?: () => void
+  onNextPress?: () => void,
+  month: number,
+  year: number,
 };
 
 const Navigator = (props: NavigatorProps) => {
+  // let prevMonth = props.month - 1
+  // let nextMonth = props.month + 1
+  // let prevYear = props.year
+  // let nextYear = props.year
+
+  // if (prevMonth > 12) {
+  //   prevMonth = 1
+  //   prevYear += 1
+  // }
+  // if (prevMonth <= 0) {
+  //   prevMonth = 12
+  //   prevYear -= 1
+  // }
+
+  // if (nextMonth > 12) {
+  //   nextMonth = 1
+  //   nextYear += 1
+  // }
+  // if (nextMonth <= 0) {
+  //   nextMonth = 12
+  //   nextYear -= 1
+  // }
+
+  // const prevHref = `?year=${prevYear}&month=${prevMonth}`
+  // const nextHref = `?year=${nextYear}&month=${nextMonth}`
+
   return (
     <NavigatorView>
       <NavigatorButton onPress={props.onPrevPress}>
-        <KeyboardArrowLeft color={props.theme.palette.text.main} />
+        {/* <Link href={prevHref}> */}
+          {/* <a> */}
+            <KeyboardArrowLeft color={props.theme.palette.text.main} />
+          {/* </a> */}
+        {/* </Link> */}
       </NavigatorButton>
       <NavigatorButton onPress={props.onTodayPress}>Today</NavigatorButton>
       <NavigatorButton onPress={props.onNextPress}>
-        <KeyboardArrowRight color={props.theme.palette.text.main} />
+        {/* <Link href={nextHref}> */}
+          {/* <a> */}
+            <KeyboardArrowRight color={props.theme.palette.text.main} />
+          {/* </a> */}
+        {/* </Link> */}
       </NavigatorButton>
     </NavigatorView>
   );

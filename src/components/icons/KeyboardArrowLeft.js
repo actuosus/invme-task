@@ -6,7 +6,7 @@ import React from "react";
 
 type KeyboardArrowLeftProps = {
   color?: string
-}
+};
 
 const KeyboardArrowLeft = (props: KeyboardArrowLeftProps) => (
   <svg

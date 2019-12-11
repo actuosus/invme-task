@@ -2,7 +2,7 @@
  * @flow
  */
 
-import React from "react";
+import * as React from "react";
 import View from "../View";
 import styled from "styled-components";
 
@@ -18,11 +18,7 @@ const ButtonView = styled(View)`
         };
 
         font-size: ${
-          size === 'small'
-            ? '8px'
-            : size === 'medium'
-              ? '10px'
-              : '14px'
+          size === "small" ? "8px" : size === "medium" ? "10px" : "14px"
         }
     `}
 `;
@@ -31,12 +27,12 @@ type ButtonProps = {
   color?: "primary" | "secondary",
   size?: "small" | "medium" | "large",
   onPress?: () => void,
-  children: React.ReactNode
+  children: React.Node
 };
 
 const Button = ({ onPress, children, ...props }: ButtonProps) => {
   return (
-    <ButtonView onClick={onPress} {...props}>
+    <ButtonView onPress={onPress} role={"button"} {...props}>
       {children}
     </ButtonView>
   );
@@ -44,7 +40,7 @@ const Button = ({ onPress, children, ...props }: ButtonProps) => {
 
 Button.defaultProps = {
   color: "primary",
-  size: "medium",
+  size: "medium"
 };
 
 export default Button;

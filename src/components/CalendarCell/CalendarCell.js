@@ -7,6 +7,7 @@ import styled from "styled-components";
 import View from "../View";
 import Text from "../Text";
 import EventList from "../EventList/EventList";
+import { type Event } from "../../types/Event";
 
 const CalendarCellView = styled(View)`
   min-width: 85px;
@@ -14,11 +15,11 @@ const CalendarCellView = styled(View)`
   height: 10vh;
   opacity: ${props => (props.pad ? 0.4 : 1)};
   // border: 1px solid #f2f2f2;
-  box-shadow: 0 0 1px #f2f2f2;
+  box-shadow: 0 0 0 0.5px #f2f2f2;
   overflow: hidden;
 
-  ${({ theme }) => `
-      box-shadow: 0 0 1px ${theme.palette.divider};
+  ${({ theme: { palette } }) => `
+      box-shadow: 0 0 0 0.5px ${palette.divider};
     `}
 `;
 
@@ -50,8 +51,8 @@ type CellProps = {
 
 const CalendarCell = (props: CellProps) => {
   const handleEventItemPress = (event: SyntheticEvent<any>, item: Event) => {
-    props.onEventPress && props.onEventPress(event, item)
-  }
+    props.onEventPress && props.onEventPress(event, item);
+  };
 
   return (
     <CalendarCellView

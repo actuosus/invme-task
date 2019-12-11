@@ -2,8 +2,8 @@
  * @flow
  */
 
-import { createStore, combineReducers } from "redux";
-import { persistReducer, persistStore } from 'redux-persist';
+import { createStore, combineReducers, compose } from "redux";
+import { persistReducer, persistStore } from "redux-persist";
 import eventReducer from "./events/reducer";
 import storage from "redux-persist/lib/storage";
 
@@ -18,8 +18,11 @@ const persistConfig = {
 
 export const configureStore = (initialState: any) => {
   const persistedReducer = persistReducer(persistConfig, rootReducer);
-  const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-  const enhancer = composeEnhancers()
+  const composeEnhancers =
+    (typeof window !== "undefined" &&
+      window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) ||
+    compose;
+  const enhancer = composeEnhancers();
   const store = createStore(persistedReducer, initialState, enhancer);
   const persistor = persistStore(store);
 

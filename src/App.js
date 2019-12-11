@@ -9,9 +9,11 @@ import AppContainer from "./containers/AppContainer";
 
 const { store } = configureStore();
 
-const App = () => (
+type AppProps = {}
+
+const App = (props: AppProps) => (
   <Provider store={store}>
-    <AppContainer />
+    <AppContainer {...props} />
   </Provider>
 );
 

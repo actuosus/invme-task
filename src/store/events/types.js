@@ -8,7 +8,7 @@ export interface EventsState {
   items: Event[];
 }
 
-const prefix = "events"
+const prefix = "events";
 
 export const ADD_EVENT = `${prefix}/ADD_EVENT`;
 export const REMOVE_EVENT = `${prefix}/REMOVE_EVENT`;

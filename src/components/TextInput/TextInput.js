@@ -14,6 +14,7 @@ const Input = styled.input`
     padding: 3px 5px;
     width: 109px;
     min-height: 17px;
+    font-family: proxima-nova, "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
 `
 
 const TextArea = styled.textarea`
@@ -26,6 +27,7 @@ const TextArea = styled.textarea`
     width: 109px;
     min-height: 109px;
     min-height: 59px;
+    font-family: proxima-nova, "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
 
     resize: none;
 `

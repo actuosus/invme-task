@@ -2,8 +2,10 @@
  * @flow
  */
 
-import { type EventId } from "./Event";
+import { type Event } from "./Event";
 
 export type ReduxState = {
-  events: Record<EventId, Event>
+  events: {
+    items: Event[]
+  }
 };

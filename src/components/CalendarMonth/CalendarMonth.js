@@ -5,11 +5,12 @@
 import * as React from "react";
 import View from "../View";
 import Heading from "../Heading";
-import Head from "../Head";
+import CalendarWeekHead from "../CalendarWeekHead";
 import CalendarCell from "../CalendarCell";
 import styled from "styled-components";
 import CalendarFooter from "../CalendarFooter";
 import { type Event } from "../../types/Event";
+import { isSameDay } from "../../lib/calendar";
 
 const CalendarCellsView = styled(View)`
   display: flex;
@@ -21,19 +22,21 @@ const CalendarCellsView = styled(View)`
   grid-template-rows: 85px;
 `;
 
-type CalendarMonthProps = {
-  events?: Event[],
-  onCellPress: (event: SyntheticEvent<any>, date: string) => void,
-  onEventPress: (event: SyntheticEvent<any>, calendarEvent: Event) => void,
-  onRemoveAllPress: () => void
-};
+const toDateString = date =>
+  `${date.getFullYear()}-${(date.getMonth() + 1)
+    .toString()
+    .padStart(2, "0")}-${date
+    .getDate()
+    .toString()
+    .padStart(2, "0")}`;
 
 const eventsByDate = (events?: Event[]) => {
   const byDate = {};
 
   if (events) {
     events.forEach(_ => {
-      const dateString = _.date;
+      const date = new Date(_.date);
+      const dateString = toDateString(date);
       if (byDate[dateString]) {
         byDate[dateString].push(_);
       } else {
@@ -51,7 +54,9 @@ const eventsByMonth = (events?: Event[]) => {
   if (events) {
     events.forEach(_ => {
       const date = new Date(_.date);
-      const dateString = `${date.getFullYear()}-${date.getMonth()}`;
+      const dateString = `${date.getFullYear()}-${(date.getMonth() + 1)
+        .toString()
+        .padStart(2, "0")}`;
       if (byMonth[dateString]) {
         byMonth[dateString].push(_);
       } else {
@@ -63,21 +68,23 @@ const eventsByMonth = (events?: Event[]) => {
   return byMonth;
 };
 
-const isSameDay = (a: Date, b: Date) => {
-  if (
-    a.getFullYear() === b.getFullYear() &&
-    a.getMonth() === b.getMonth() &&
-    a.getDate() === b.getDate()
-  ) {
-    return true;
-  }
+const utcDate = (year, month, date) =>
+  new Date(Date.UTC(year, month - 1, date));
+const isoDateString = (year, month, date) =>
+  utcDate(year, month, date).toISOString();
 
-  return false;
+type CalendarMonthProps = {
+  events?: Event[],
+  year?: number,
+  month?: number,
+  onCellPress: (event: SyntheticEvent<any>, date: string) => void,
+  onEventPress: (event: SyntheticEvent<any>, calendarEvent: Event) => void,
+  onRemoveAllPress: (isoDateString: string) => void
 };
 
 const CalendarMonth = (props: CalendarMonthProps) => {
-  const [year, setYear] = React.useState(2020);
-  const [month, setMonth] = React.useState(1);
+  const [year, setYear] = React.useState(props.year || 2020);
+  const [month, setMonth] = React.useState(props.month || 1);
 
   const today = new Date();
 
@@ -93,8 +100,8 @@ const CalendarMonth = (props: CalendarMonthProps) => {
 
   const handleNextMonthPress = () => {
     let newMonth = month + 1;
-    if (newMonth >= 12) {
-      newMonth = 0;
+    if (newMonth > 12) {
+      newMonth = 1;
 
       setYear(year + 1);
     }
@@ -118,7 +125,7 @@ const CalendarMonth = (props: CalendarMonthProps) => {
   };
 
   const handleRemoveAllPress = () => {
-    props.onRemoveAllPress();
+    props.onRemoveAllPress(isoDateString(year, month, 1));
   };
 
   const startOfTheMonth = new Date(year, month - 1, 1);
@@ -144,14 +151,14 @@ const CalendarMonth = (props: CalendarMonthProps) => {
         onNextPress={handleNextMonthPress}
         onTodayPress={handleTodayPress}
       />
-      <Head />
+      <CalendarWeekHead />
       <CalendarCellsView>
         {startPadCells.map((_, i) => (
           <CalendarCell key={`start-pad-${i}`} day={i + 1} pad />
         ))}
         {cells.map((_, i) => {
-          const date = new Date(year, month, i + 1);
-          const dateString = date.toISOString();
+          const date = utcDate(year, month, i + 1);
+          const dateString = toDateString(date);
           const _today = new Date(
             today.getFullYear(),
             today.getMonth(),
@@ -175,12 +182,17 @@ const CalendarMonth = (props: CalendarMonthProps) => {
       </CalendarCellsView>
 
       <CalendarFooter
-        events={byMonth[`${year}-${month}`]}
+        events={byMonth[`${year}-${month.toString().padStart(2, "0")}`]}
         onRemoveAllPress={handleRemoveAllPress}
         date={startOfTheMonth}
       />
     </View>
   );
+};
+
+CalendarMonth.defaultProps = {
+  year: 2020,
+  month: 1
 };
 
 export default CalendarMonth;

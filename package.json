@@ -5,7 +5,10 @@
     "main": "index.js",
     "version": "0.0.1",
     "scripts": {
-        "start:web": "cross-env platform=web NODE_ENV=development webpack-dev-server --config=web/webpack/dev.js --progress --colors --mode=development"
+        "start:web": "cross-env platform=web NODE_ENV=development webpack-dev-server --config=web/webpack/dev.js --progress --colors --mode=development",
+        "dev": "next",
+        "build": "next build",
+        "start": "next start"
     },
     "author": {
         "name": "Arthur Chafonov",
@@ -13,6 +16,7 @@
         "url": "http://actuosus.com/"
     },
     "dependencies": {
+        "next": "^9.1.5",
         "react": "^16.12.0",
         "react-dom": "^16.12.0",
         "react-pose": "^4.0.10",
@@ -28,6 +32,7 @@
         "@babel/preset-env": "^7.7.6",
         "babel-eslint": "^10.0.3",
         "babel-loader": "^8.0.6",
+        "babel-plugin-styled-components": "^1.10.6",
         "babel-preset-react-app": "^9.1.0",
         "compression-webpack-plugin": "^3.0.1",
         "cross-env": "^6.0.3",

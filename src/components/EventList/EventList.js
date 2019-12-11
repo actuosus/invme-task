@@ -29,7 +29,7 @@ const EventItemView = styled(View)`
 
 type EventListProps = {
   items?: Event[],
-  onItemPress?: (event: SyntheticEvent<any>, item: Event) => void,
+  onItemPress?: (event: SyntheticEvent<any>, item: Event) => void
 };
 
 const formatTime = (date: Date) =>
@@ -44,20 +44,25 @@ const formatTime = (date: Date) =>
 const EventList = (props: EventListProps) => {
   const { items } = props;
 
-  const handleItemPress = (item) => (event) => {
-    event.stopPropagation()
+  const handleItemPress = item => event => {
+    event.stopPropagation();
 
-    props.onItemPress && props.onItemPress(event, item)
+    props.onItemPress && props.onItemPress(event, item);
+  };
+
+  if (!items) {
+    return null;
   }
 
   return (
     <View>
       {items &&
         items.map((_, i) => (
-          <EventItemView key={i} onPress={handleItemPress(_)}>
-            <EventItemTime>
-              {formatTime(new Date(_.date))}
-            </EventItemTime>
+          <EventItemView
+            key={i}
+            onPress={handleItemPress(_)}
+          >
+            <EventItemTime>{formatTime(new Date(_.date))}</EventItemTime>
             <EventItemTitle>{_.title}</EventItemTitle>
           </EventItemView>
         ))}
