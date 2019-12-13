@@ -8,6 +8,7 @@ import Text from "../Text";
 import Navigator from "../Navigator";
 import styled from "styled-components";
 import { monthNames } from "../../lib/calendar";
+import { type Theme } from "../../types/Theme";
 
 const MonthTitleView = styled(Text)`
   font-size: 20px;
@@ -35,6 +36,7 @@ const HeadingView = styled(View)`
 `;
 
 type HeadingProps = {
+  theme: Theme,
   date: Date,
   onPrevPress: () => void,
   onNextPress: () => void,

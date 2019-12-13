@@ -6,6 +6,7 @@ import React from "react";
 import View from "../View";
 import Text from "../Text";
 import styled from "styled-components";
+import { type Theme } from "../../types/Theme";
 
 const WeekDays = styled(View)`
   display: flex;
@@ -36,7 +37,11 @@ const WeekDayTitle = styled(Text)`
 
 const weekNamesShort = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
-const CalendarWeekHead = () => {
+type CalendarWeekHeadProps = {
+  theme: Theme
+};
+
+const CalendarWeekHead = (props: CalendarWeekHeadProps) => {
   return (
     <WeekDays>
       {Array(7)

@@ -8,6 +8,7 @@ import View from "../View";
 import Text from "../Text";
 import EventList from "../EventList/EventList";
 import { type Event } from "../../types/Event";
+import { type Theme } from "../../types/Theme";
 
 const CalendarCellView = styled(View)`
   min-width: 85px;
@@ -41,6 +42,7 @@ const CalendarDayViewLabel = styled(Text)`
 `;
 
 type CellProps = {
+  theme: Theme,
   day: number,
   events?: Event[],
   pad?: boolean,

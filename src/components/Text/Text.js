@@ -7,7 +7,7 @@ import * as React from "react";
 type TextProps = {
   className?: string,
   children?: string,
-  style?: ViewProp
+  style?: any
 };
 
 const Text = (props: TextProps) => {

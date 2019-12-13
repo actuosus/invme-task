@@ -10,6 +10,8 @@ const FormRowView = styled(View)`
   margin: 3px;
 `;
 
-const FormRow = props => <FormRowView {...props} />;
+type FormRowProps = {};
+
+const FormRow = (props: FormRowProps) => <FormRowView {...props} />;
 
 export default FormRow;

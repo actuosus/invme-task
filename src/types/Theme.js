@@ -7,6 +7,9 @@ export type Theme = {
         },
         secondary: {
             main: Color
+        },
+        text: {
+            main: Color
         }
     }
 }

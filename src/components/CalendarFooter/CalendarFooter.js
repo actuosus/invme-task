@@ -8,6 +8,7 @@ import Text from "../Text";
 import Button from "../Button";
 import styled from "styled-components";
 import { monthNames } from "../../lib/calendar";
+import { type Theme } from "../../types/Theme";
 
 const CalendarFooterView = styled(View)`
   display: flex;
@@ -51,6 +52,7 @@ const MonthLabel = styled(Text)`
 `;
 
 type CalendarFooterProps = {
+  theme: Theme,
   events: Event[],
   date: Date,
   onRemoveAllPress: () => void

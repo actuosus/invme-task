@@ -8,6 +8,7 @@ import styled, { withTheme } from "styled-components";
 import Button from "../Button";
 import KeyboardArrowLeft from "../icons/KeyboardArrowLeft";
 import KeyboardArrowRight from "../icons/KeyboardArrowRight";
+import { type Theme } from "../../types/Theme";
 
 const NavigatorView = styled(View)`
   display: flex;
@@ -24,11 +25,12 @@ const NavigatorButton = styled(Button)`
 `;
 
 type NavigatorProps = {
+  theme: Theme,
   onPrevPress?: () => void,
   onTodayPress?: () => void,
   onNextPress?: () => void,
   month: number,
-  year: number,
+  year: number
 };
 
 const Navigator = (props: NavigatorProps) => {
@@ -62,17 +64,17 @@ const Navigator = (props: NavigatorProps) => {
     <NavigatorView>
       <NavigatorButton onPress={props.onPrevPress}>
         {/* <Link href={prevHref}> */}
-          {/* <a> */}
-            <KeyboardArrowLeft color={props.theme.palette.text.main} />
-          {/* </a> */}
+        {/* <a> */}
+        <KeyboardArrowLeft color={props.theme.palette.text.main} />
+        {/* </a> */}
         {/* </Link> */}
       </NavigatorButton>
       <NavigatorButton onPress={props.onTodayPress}>Today</NavigatorButton>
       <NavigatorButton onPress={props.onNextPress}>
         {/* <Link href={nextHref}> */}
-          {/* <a> */}
-            <KeyboardArrowRight color={props.theme.palette.text.main} />
-          {/* </a> */}
+        {/* <a> */}
+        <KeyboardArrowRight color={props.theme.palette.text.main} />
+        {/* </a> */}
         {/* </Link> */}
       </NavigatorButton>
     </NavigatorView>

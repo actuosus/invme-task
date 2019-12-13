@@ -5,6 +5,7 @@
 import * as React from "react";
 import View from "../View";
 import styled from "styled-components";
+import { type Theme } from "../../types/Theme";
 
 const ButtonView = styled(View)`
   cursor: pointer;
@@ -24,6 +25,7 @@ const ButtonView = styled(View)`
 `;
 
 type ButtonProps = {
+  theme: Theme,
   color?: "primary" | "secondary",
   size?: "small" | "medium" | "large",
   onPress?: () => void,

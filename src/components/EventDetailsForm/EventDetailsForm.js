@@ -12,6 +12,7 @@ import PointingRhombusIcon from "../icons/PointingRhombus";
 import { type Event } from "../../types/Event";
 import posed from "react-pose";
 import Form from "../Form";
+import { type Theme } from "../../types/Theme";
 
 const EventDetailsFormContainerView = styled(
   posed(Form)({
@@ -89,6 +90,7 @@ const formatDateValue = (date: Date) =>
     .padStart(2, "0")}`;
 
 type EventDetailsFormProps = {
+  theme: Theme,
   event?: Event,
   position: {
     position: "left" | "right",

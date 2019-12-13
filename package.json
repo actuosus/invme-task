@@ -8,7 +8,8 @@
         "start:web": "cross-env platform=web NODE_ENV=development webpack-dev-server --config=web/webpack/dev.js --progress --colors --mode=development",
         "dev": "next",
         "build": "next build",
-        "start": "next start"
+        "start": "next start",
+        "lint": "flow"
     },
     "author": {
         "name": "Arthur Chafonov",

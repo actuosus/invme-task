@@ -67,6 +67,25 @@ const darkTheme = {
   }
 };
 
+const applyTheme = () => {
+  if (
+    typeof window !== "undefined" &&
+    window.matchMedia &&
+    window.matchMedia("(prefers-color-scheme: dark)").matches
+  ) {
+    const theme = darkTheme;
+
+    if (document.body && document.body.style) {
+      document.body.style.color = theme.palette.text.main;
+      document.body.style.backgroundColor = theme.palette.background.default;
+    }
+
+    return theme;
+  }
+
+  return lightTheme;
+}
+
 type AppContainerProps = {
   events: Event[],
   addEvent: typeof addEvent,
@@ -84,19 +103,7 @@ const AppContainer = ({
   removeAllEventsByMonth,
   ...props
 }: AppContainerProps) => {
-  let theme = lightTheme;
-  if (
-    typeof window !== "undefined" &&
-    window.matchMedia &&
-    window.matchMedia("(prefers-color-scheme: dark)").matches
-  ) {
-    theme = darkTheme;
-
-    if (document.body.style) {
-      document.body.style.color = theme.palette.text.main;
-      document.body.style.backgroundColor = theme.palette.background.default;
-    }
-  }
+  const theme = applyTheme();
 
   const [showEventDetailsForm, setShowEventDetailsForm] = React.useState(false);
   const [
