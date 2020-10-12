@@ -7,15 +7,23 @@ import View from "../View";
 import styled from "styled-components";
 import { type Theme } from "../../types/Theme";
 
-const ButtonView = styled(View)`
+type ButtonProps = {
+  theme: Theme,
+  color?: "primary" | "secondary",
+  size?: "small" | "medium" | "large",
+  onPress?: (event: SyntheticEvent<any>) => void,
+  children: React.Node
+};
+
+const ButtonView: React.ComponentType<ButtonProps> = styled(View)`
   cursor: pointer;
   user-select: none;
 
-  ${({ theme, color, size }) => `
+  ${({ theme, color, size }: ButtonProps) => `
         color: ${
-          color === "primary"
-            ? theme.palette.primary.main
-            : theme.palette.secondary.main
+          color === "secondary"
+            ? theme.palette.secondary.main
+            : theme.palette.primary.main
         };
 
         font-size: ${
@@ -23,14 +31,6 @@ const ButtonView = styled(View)`
         }
     `}
 `;
-
-type ButtonProps = {
-  theme: Theme,
-  color?: "primary" | "secondary",
-  size?: "small" | "medium" | "large",
-  onPress?: () => void,
-  children: React.Node
-};
 
 const Button = ({ onPress, children, ...props }: ButtonProps) => {
   return (

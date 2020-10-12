@@ -62,15 +62,15 @@ const Navigator = (props: NavigatorProps) => {
 
   return (
     <NavigatorView>
-      <NavigatorButton onPress={props.onPrevPress}>
+      <NavigatorButton onPress={props.onPrevPress} theme={props.theme}>
         {/* <Link href={prevHref}> */}
         {/* <a> */}
         <KeyboardArrowLeft color={props.theme.palette.text.main} />
         {/* </a> */}
         {/* </Link> */}
       </NavigatorButton>
-      <NavigatorButton onPress={props.onTodayPress}>Today</NavigatorButton>
-      <NavigatorButton onPress={props.onNextPress}>
+      <NavigatorButton onPress={props.onTodayPress} theme={props.theme}>Today</NavigatorButton>
+      <NavigatorButton onPress={props.onNextPress} theme={props.theme}>
         {/* <Link href={nextHref}> */}
         {/* <a> */}
         <KeyboardArrowRight color={props.theme.palette.text.main} />

@@ -4,17 +4,15 @@
 
 import { type Event, type EventId } from "../../types/Event";
 
-export interface EventsState {
+export type EventsState = {
   items: Event[];
 }
 
-const prefix = "events";
-
-export const ADD_EVENT = `${prefix}/ADD_EVENT`;
-export const REMOVE_EVENT = `${prefix}/REMOVE_EVENT`;
-export const REMOVE_ALL_EVENTS_BY_MONTH = `${prefix}/REMOVE_ALL_EVENTS_BY_MONTH`;
-export const REMOVE_ALL_EVENTS = `${prefix}/REMOVE_ALL_EVENTS`;
-export const UPDATE_EVENT = `${prefix}/UPDATE_EVENT`;
+export const ADD_EVENT = `events/ADD_EVENT`;
+export const REMOVE_EVENT = `events/REMOVE_EVENT`;
+export const REMOVE_ALL_EVENTS_BY_MONTH = `events/REMOVE_ALL_EVENTS_BY_MONTH`;
+export const REMOVE_ALL_EVENTS = `events/REMOVE_ALL_EVENTS`;
+export const UPDATE_EVENT = `events/UPDATE_EVENT`;
 
 export type AddEventAction = {
   type: typeof ADD_EVENT,

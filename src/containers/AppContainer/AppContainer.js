@@ -237,6 +237,7 @@ const AppContainer = ({
           events={props.events}
           year={router && router.query && parseInt(router.query.year)}
           month={router && router.query && parseInt(router.query.month)}
+          theme={theme}
         />
 
         {shouldMountEventDetailsForm ? (

@@ -99,7 +99,8 @@ type EventDetailsFormProps = {
   },
   onChange: (event: SyntheticEvent<any>, calendarEvent: Event) => void,
   onRemovePress: (event: SyntheticEvent<any>, event: Event) => void,
-  opened: boolean
+  opened: boolean,
+  onPoseComplete: () => void,
 };
 
 const EventDetailsForm = React.forwardRef<
@@ -199,6 +200,7 @@ const EventDetailsForm = React.forwardRef<
             <Button
               color={"secondary"}
               size={"small"}
+              theme={theme}
               onPress={handleRemovePress}
             >
               remove

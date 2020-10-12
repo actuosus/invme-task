@@ -10,6 +10,7 @@ import CalendarCell from "../CalendarCell";
 import styled from "styled-components";
 import CalendarFooter from "../CalendarFooter";
 import { type Event } from "../../types/Event";
+import { type Theme } from "../../types/Theme";
 import { isSameDay } from "../../lib/calendar";
 
 const CalendarCellsView = styled(View)`
@@ -74,6 +75,7 @@ const isoDateString = (year, month, date) =>
   utcDate(year, month, date).toISOString();
 
 type CalendarMonthProps = {
+  theme: Theme,
   events?: Event[],
   year?: number,
   month?: number,
@@ -83,6 +85,7 @@ type CalendarMonthProps = {
 };
 
 const CalendarMonth = (props: CalendarMonthProps) => {
+  const { theme } = props;
   const [year, setYear] = React.useState(props.year || 2020);
   const [month, setMonth] = React.useState(props.month || 1);
 
@@ -150,11 +153,12 @@ const CalendarMonth = (props: CalendarMonthProps) => {
         onPrevPress={handlePrevMonthPress}
         onNextPress={handleNextMonthPress}
         onTodayPress={handleTodayPress}
+        theme={theme}
       />
-      <CalendarWeekHead />
+      <CalendarWeekHead theme={theme} />
       <CalendarCellsView>
         {startPadCells.map((_, i) => (
-          <CalendarCell key={`start-pad-${i}`} day={i + 1} pad />
+          <CalendarCell key={`start-pad-${i}`} day={i + 1} pad theme={theme}/>
         ))}
         {cells.map((_, i) => {
           const date = utcDate(year, month, i + 1);
@@ -173,11 +177,12 @@ const CalendarMonth = (props: CalendarMonthProps) => {
               onEventPress={handleEventPress}
               events={byDate[dateString]}
               today={isSameDay(_today, date)}
+              theme={theme}
             />
           );
         })}
         {endPadCells.map((_, i) => (
-          <CalendarCell key={`end-pad-${i}`} day={i + 1} pad />
+          <CalendarCell key={`end-pad-${i}`} day={i + 1} pad theme={theme}/>
         ))}
       </CalendarCellsView>
 
@@ -185,6 +190,7 @@ const CalendarMonth = (props: CalendarMonthProps) => {
         events={byMonth[`${year}-${month.toString().padStart(2, "0")}`]}
         onRemoveAllPress={handleRemoveAllPress}
         date={startOfTheMonth}
+        theme={theme}
       />
     </View>
   );

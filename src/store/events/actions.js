@@ -11,8 +11,19 @@ import {
 } from "./types";
 import uuid from "uuid/v4";
 import { type EventId } from "../../types/Event";
+import {
+  type AddEventAction,
+  type UpdateEventAction,
+  type RemoveEventAction,
+  type RemoveAllEventsByMonthAction,
+  type RemoveAllEventsAction
+} from "./types";
 
-export const addEvent = (title: string, date: string, note: string) => {
+export const addEvent = (
+  title: string,
+  date: string,
+  note: string
+): AddEventAction => {
   const id = uuid();
 
   return {
@@ -26,28 +37,30 @@ export const updateEvent = (
   title: string,
   date: string,
   note: string
-) => {
+): UpdateEventAction => {
   return {
     type: UPDATE_EVENT,
     payload: { id, title, date, note }
   };
 };
 
-export const removeEvent = (id: EventId) => {
+export const removeEvent = (id: EventId): RemoveEventAction => {
   return {
     type: REMOVE_EVENT,
     payload: { id }
   };
 };
 
-export const removeAllEventsByMonth = (isoDateString: string) => {
+export const removeAllEventsByMonth = (
+  isoDateString: string
+): RemoveAllEventsByMonthAction => {
   return {
     type: REMOVE_ALL_EVENTS_BY_MONTH,
     payload: { date: isoDateString }
   };
 };
 
-export const removeAllEvents = () => {
+export const removeAllEvents = (): RemoveAllEventsAction => {
   return {
     type: REMOVE_ALL_EVENTS
   };

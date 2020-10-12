@@ -20,7 +20,7 @@ const initialState = {
 export default function eventsReducer(
   state: EventsState = initialState,
   action: EventActionTypes
-) {
+): EventsState {
   switch (action.type) {
     case ADD_EVENT:
       return {

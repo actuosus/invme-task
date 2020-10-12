@@ -68,7 +68,7 @@ const CalendarFooter = (props: CalendarFooterProps) => {
           <EventCountText>{props.events.length} events</EventCountText>
           <MonthLabel>in {monthName(props.date)}</MonthLabel>
           <TextDelimiter>–</TextDelimiter>
-          <Button onPress={props.onRemoveAllPress}>
+          <Button onPress={props.onRemoveAllPress} theme={props.theme}>
             <RemoveAllLabel>Remove All</RemoveAllLabel>
           </Button>
         </CalendarFooterWrapper>
