@@ -1,14 +1,18 @@
 {
     "cSpell.words": [
         "Chafonov",
+        "Figma",
         "actuosus",
+        "flowtype",
         "gmail",
         "invme",
+        "multiline",
         "persistor"
     ],
     "eslint.enable": true,
     "eslint.packageManager": "yarn",
     "flow.useNPMPackagedFlow": true,
     "javascript.validate.enable": false,
-    "npm.packageManager": "yarn"
+    "npm.packageManager": "yarn",
+    "linter_codeclimate.enabled": true
 }
